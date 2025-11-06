@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Gemini Chat Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Header (sticky like ChatGPT) -->
+    <header class="app-header">
+        <div class="header-inner">
+            <span class="logo">💬</span>
+            <h1>Gemini Chat Agent</h1>
+        </div>
+    </header>
+
+    <!-- Chat column (centered) -->
+    <main class="chat-wrap">
+        <div id="messages" class="chat-column"></div>
+    </main>
+
+    <!-- Composer bar fixed to bottom, centered column inside -->
+    <form id="composer" class="composer" autocomplete="off">
+        <div class="composer-inner">
+            <textarea id="prompt" class="composer-input" placeholder="Type your message…" rows="1"></textarea>
+            <button id="send" class="composer-send" type="submit">Send</button>
+        </div>
+    </form>
+
+    <script>
+        // === Minimal JS using your existing endpoints ===
+        const messagesEl = document.getElementById('messages');
+        const form = document.getElementById('composer');
+        const input = document.getElementById('prompt');
+        const sendBtn = document.getElementById('send');
+
+        // Auto-resize textarea (like ChatGPT)
+        function autoresize() {
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 200) + 'px';
+        }
+        input.addEventListener('input', autoresize);
+
+        function escapeHtml(s) {
+            return (s || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        }
+
+        function renderMsg(m) {
+            const item = document.createElement('div');
+            item.className = 'msg ' + (m.role === 'user' ? 'user' : 'assistant');
+            item.innerHTML = `
+        <div class="avatar">${m.role === 'user' ? '🧑' : '🤖'}</div>
+        <div class="bubble">${escapeHtml(m.text || '')}</div>
+      `;
+            messagesEl.appendChild(item);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        async function loadHistory() {
+            const r = await fetch('/api/history');
+            const j = await r.json();
+            messagesEl.innerHTML = '';
+            j.messages.forEach(renderMsg);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = input.value.trim();
+            if (!text) return;
+
+            renderMsg({ role: 'user', text });
+            input.value = '';
+            autoresize();
+            sendBtn.disabled = true;
+
+            try {
+                const r = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: text })
+                });
+                const j = await r.json();
+                if (j.error) renderMsg({ role: 'model', text: `Error: ${j.error}` });
+                else renderMsg({ role: 'model', text: j.text });
+            } catch (e) {
+                renderMsg({ role: 'model', text: 'Network error.' });
+            } finally {
+                sendBtn.disabled = false;
+            }
+        });
+
+        loadHistory();
+    </script>
+</body>
+
+</html>
