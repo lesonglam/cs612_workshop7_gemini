@@ -47,6 +47,7 @@ pip install notebook
 pip install Flask requests python-dotenv
 
 Clone this repo.
+Open the project foder with VScode.
 Inside the project folder, create a .env file with this content: GEMINI_API_KEY="your-api-key"
 Open the file main.ipynb, click Run the cell "Testing environment", and Select the kernel (the environment) you had created.
 If you see the "'Success!'" message, that means you're done with the setup environment.
