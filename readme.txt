@@ -46,16 +46,18 @@ pip install -U python-dotenv
 pip install notebook
 pip install Flask requests python-dotenv
 
-Create a project folder.
-Create a .env file with this content: GEMINI_API_KEY="your-api-key" 
-Create a file main.ipynb in the folder
-Write a simple line of python code a cell,
-Click Run the cell, and Select the kernel (the environment) you had created.
+Clone this repo.
+Inside the project folder, create a .env file with this content: GEMINI_API_KEY="your-api-key"
+Click Run the cell "Testing environment", and Select the kernel (the environment) you had created.
+If you see the "'Success!'" message, that means you're done with the setup environment.
 
 Step 5: During class
 Tip: To change directory other drive like D, type "D:"
-To run the Flask: flask --app app run
-On the browser: http://127.0.0.1:5000/
+Three runs: 
+    1. Run by cell: main.ipynb
+    2. Run by file: python main.py
+    3. Run the web using Flask: flask --app app run
+       On the browser: http://127.0.0.1:5000/
 
 
 ------------------------------------
