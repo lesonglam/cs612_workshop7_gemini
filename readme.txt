@@ -39,12 +39,12 @@ Step 4: Creating environment and libraries
 conda create --name ws7 python=3.12
 conda activate ws7
 
-pip install -U google-generativeai     # official GenAI SDK (Gemini quickstart)
-pip install -U faiss-cpu        # or use pinecone client if using Pinecone
-pip install -U tiktoken         # optional for token accounting
-pip install -U python-dotenv    # manage API key locally
+pip install -U google-generativeai
+pip install -U faiss-cpu
+pip install -U tiktoken
+pip install -U python-dotenv
 pip install notebook
-pip install Flask requests python-dotenv  #for web 
+pip install Flask requests python-dotenv
 
 Create a project folder.
 Create a .env file with this content: GEMINI_API_KEY="your-api-key" 
@@ -54,7 +54,8 @@ Click Run the cell, and Select the kernel (the environment) you had created.
 
 Step 5: During class
 Tip: To change directory other drive like D, type "D:"
-
+To run the Flask: flask --app app run
+On the browser: http://127.0.0.1:5000/
 
 
 ------------------------------------
