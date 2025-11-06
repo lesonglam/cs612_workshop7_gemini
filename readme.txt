@@ -48,7 +48,7 @@ pip install Flask requests python-dotenv
 
 Clone this repo.
 Inside the project folder, create a .env file with this content: GEMINI_API_KEY="your-api-key"
-Click Run the cell "Testing environment", and Select the kernel (the environment) you had created.
+Open the file main.ipynb, click Run the cell "Testing environment", and Select the kernel (the environment) you had created.
 If you see the "'Success!'" message, that means you're done with the setup environment.
 
 Step 5: During class
